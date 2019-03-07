@@ -18,10 +18,6 @@ public class MainThread extends Thread{
         this.Gpanel = Gpanel;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
     public void run() {
         long startTime;
         long milliseconds = 1000/MAX_FPS;
@@ -78,6 +74,9 @@ public class MainThread extends Thread{
         }
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
 
 }

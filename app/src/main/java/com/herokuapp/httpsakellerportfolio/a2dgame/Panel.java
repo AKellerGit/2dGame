@@ -20,25 +20,38 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean End;
     private long EndTimer;
     private Rect r = new Rect();
+    //private GyroControl gyroControl;
+    //private long frames;
 
     //Constructor
     public Panel(Context context) {
         super(context);
-        obsGen = new ObstacleGeneration(200,350,75, Color.DKGRAY);
+        //initialize
+        obsGen = new ObstacleGeneration(300,600,100, Color.DKGRAY);
         getHolder().addCallback(this);
 
         thread = new MainThread(getHolder(), this);
-        player = new Player(new Rect(100,100,200,200), Color.BLACK);
-        point = new Point(Dimensions.SCREEN_WIDTH/2, Dimensions.SCREEN_HEIGHT/3);
+        player = new Player(new Rect(50,50,100,100), Color.BLACK);
+        point = new Point(Dimensions.SCREEN_WIDTH/2, 5*Dimensions.SCREEN_HEIGHT/6);
         player.update(point);
-        setFocusable(true);
+
+/*
+        gyroControl = new GyroControl();
+        gyroControl.register();
+        frames = System.currentTimeMillis();
+*/
     }
 
     public void reset(){
-        point = new Point(Dimensions.SCREEN_WIDTH/2, Dimensions.SCREEN_HEIGHT/3);
+        point = new Point(Dimensions.SCREEN_WIDTH/2, 5*Dimensions.SCREEN_HEIGHT/6);
         player.update(point);
         obsGen = new ObstacleGeneration(200,350,75, Color.DKGRAY);
         validMove = false;
+
+    }
+
+    public boolean getValidmove(){
+        return validMove;
     }
 
     @Override
@@ -83,6 +96,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
                 if(End && System.currentTimeMillis() - EndTimer >=2000){
                     reset();
                     End = false;
+                    //gyroControl.newGame();
                 }
             break;
             //on move
@@ -104,8 +118,41 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(){
         if(!End) {
-            player.update(point);
+  //----------------GYRO controls--------------------------------------------------//
+           /* if(frames < Dimensions.INIT_TIME) {
+                frames = Dimensions.INIT_TIME;
+            }
+            int elapse = (int)(System.currentTimeMillis() - frames);
+            frames= System.currentTimeMillis();
+            if(gyroControl.getGyro() != null && gyroControl.getStartGyro() != null){
+                float pitch = gyroControl.getGyro()[1] - gyroControl.getStartGyro()[1];
+                float roll = gyroControl.getGyro()[2] - gyroControl.getStartGyro()[2];
+
+                float xVelocity = 2*roll*Dimensions.SCREEN_WIDTH/1000f;
+                float yVelocity = pitch*Dimensions.SCREEN_HEIGHT/1000f;
+
+                point.x += Math.abs(xVelocity*elapse)> 5 ? xVelocity*elapse :0;
+                point.y += Math.abs(yVelocity*elapse)> 5 ? yVelocity*elapse :0;
+        }
+
+            if(point.x < 0){
+                point.x = 0;
+            }
+            else if(point.x > Dimensions.SCREEN_WIDTH){
+                point.x = Dimensions.SCREEN_WIDTH;
+            }
+            if(point.y < 0){
+                point.y = 0;
+            }
+            else if(point.y > Dimensions.SCREEN_HEIGHT){
+                point.y = Dimensions.SCREEN_HEIGHT;
+            }
+*/
+  //----------------GYRO controls END--------------------------------------------------//
+
+        player.update(point);
             obsGen.update();
+
             if(obsGen.Collision(player)) {
                 End = true;
                 EndTimer = System.currentTimeMillis();

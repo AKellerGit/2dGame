@@ -16,7 +16,7 @@ public class Player implements Gobject {
         this.r = r;
         this.color = color;
     }
-
+    //accessor function
     public Rect getrect() {
         return r;
     }
@@ -35,7 +35,8 @@ public class Player implements Gobject {
 
     public void update(Point point) {
         //top screen is zero y value, increases at point moves down
-        r.set(point.x - r.width()/2, point.y - r.height()/2,point.x + r.width()/2, point.y + r.height()/2);
+        r.set(point.x - r.width()/2, point.y - r.height()/2,
+                point.x + r.width()/2, point.y + r.height()/2);
 
 
     }

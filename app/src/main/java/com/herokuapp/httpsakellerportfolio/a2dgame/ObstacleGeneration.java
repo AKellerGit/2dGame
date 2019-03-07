@@ -32,16 +32,6 @@ public class ObstacleGeneration {
         populateObs();
     }
 
-    //if collision happens return true, otherwise return false
-    public boolean Collision(Player player) {
-        for(Obstacles obs : obstacles) {
-            if(obs.Collision(player))
-                return true;
-        }
-        return false;
-    }
-
-
     // 4/3 overflow for obstacles generated based on screen height
     private void populateObs(){
         int y = -5*Dimensions.SCREEN_HEIGHT/4;
@@ -55,6 +45,19 @@ public class ObstacleGeneration {
             obstacles.add(new Obstacles(obsHeight, color, x, y, pGap));
             y = y + obsHeight + obsGap;
         }
+    }
+
+    //if collision happens return true, otherwise return false
+    public boolean Collision(Player player) {
+        for(Obstacles obs : obstacles) {
+            if(obs.Collision(player))
+                return true;
+        }
+        return false;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     //framerate independence, update based on time
